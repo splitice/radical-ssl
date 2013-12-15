@@ -1,0 +1,16 @@
+{
+	"keywords" : [
+		"radical-php"
+	],
+	"autoload" : {
+		"psr-0" : {
+			"Radical" : "src"
+		}
+	},
+	"name" : "splitice/radical-ssl",
+	"type" : "library",
+	"description" : "radical-ssl",
+	"require" : {
+		"php" : ">=5.4"
+	}
+}
