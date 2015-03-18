@@ -26,8 +26,16 @@ class X509 {
 			throw new \Exception('Invalid private key');
 		}
 		
-		$csr = openssl_csr_new($dn->toArray(), $privkey);
+		$csr = @openssl_csr_new($dn->toArray(), $privkey);
+        if(!$csr){
+            throw new \Exception('Failed create signing request. Input likely invalid.');
+        }
+
 		$sscert = openssl_csr_sign($csr, null, $privkey, $numberofdays);
+        if(!$sscert){
+            throw new \Exception('Failed create signing request. Input likely invalid.');
+        }
+
 		openssl_x509_export($sscert, $publickey);
 		$privatekey = null;
 		if(!openssl_pkey_export($privkey, $privatekey, $privkeypass)){
