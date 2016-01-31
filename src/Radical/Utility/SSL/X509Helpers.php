@@ -12,7 +12,15 @@ class X509Helpers {
 	function generatePrivateKey(){
 		return openssl_pkey_new();
 	}
-	
+
+	/**
+	 * @param SigningDetails $dn
+	 * @param null $privateKey
+	 * @param null $privkeypass
+	 * @param int $numberofdays
+	 * @return array
+	 * @throws \Exception
+	 */
 	function generate(SigningDetails $dn, $privateKey = null, $privkeypass = null, $numberofdays = 365){
 		if($privateKey === null){
 			$privkey = $this->generatePrivateKey();
@@ -46,6 +54,6 @@ class X509Helpers {
 			throw new \Exception('CSR generation failed');
 		}*/
 		
-		return new X509CertificatePair($publickey, $privatekey);
+		return [$publickey, $privatekey];
 	}
 }

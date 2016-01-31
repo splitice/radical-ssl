@@ -11,10 +11,9 @@ class X509Certificate
 
 	function __construct($data, X509 $x509 = null)
 	{
+		$this->x509 = new X509();
 		if($x509) {
-			$this->x509 = clone $x509;
-		}else{
-			$this->x509 = new X509();
+			$this->x509->CAs = $x509->CAs;
 		}
 
 		$this->cert_data = $this->x509->loadX509($data);
