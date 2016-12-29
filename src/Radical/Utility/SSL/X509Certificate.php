@@ -17,6 +17,10 @@ class X509Certificate
 		}
 
 		$this->cert_data = $this->x509->loadX509($data);
+		if($this->cert_data === false){
+			throw new \Exception('Unable to parse SSL certificate');
+		}
+		$this->data = $data;
 	}
 
 
@@ -53,6 +57,6 @@ class X509Certificate
 	}
 
 	function getContents(){
-		return $this->x509->saveX509($this->cert_data)."\r\n";
+		return $this->data."\r\n";
 	}
 }
