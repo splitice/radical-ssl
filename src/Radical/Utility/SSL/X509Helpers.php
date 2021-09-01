@@ -2,11 +2,16 @@
 namespace Radical\Utility\SSL;
 
 class X509Helpers {
-	function checkPair($cert, $key, $passphrase = null){
-		if(openssl_pkey_get_private($key,$passphrase) === false){
+	function checkPair($cert, $key, $passphrase = null, &$reason = null){
+		if(openssl_pkey_get_private($key, $passphrase) === false){
+            $reason = 'private key';
 			return false;
 		}
-		return openssl_x509_check_private_key($cert,$key);
+		if(!openssl_x509_check_private_key($cert, $key)){
+            $reason = "does not match";
+            return false;
+        }
+        return true;
 	}
 	
 	function generatePrivateKey(){
@@ -47,7 +52,7 @@ class X509Helpers {
 		openssl_x509_export($sscert, $publickey);
 		$privatekey = null;
 		if(!openssl_pkey_export($privkey, $privatekey, $privkeypass)){
-			throw new \Exception('Private key generatio failed');
+			throw new \Exception('Private key generation failed');
 		}
 		/*$csrStr = null;
 		if(!openssl_csr_export($csr, $csrStr)){
